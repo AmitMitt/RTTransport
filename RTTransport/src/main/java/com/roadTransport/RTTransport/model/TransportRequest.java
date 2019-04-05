@@ -8,7 +8,7 @@ public class TransportRequest {
     private String modifiedDate;
     private String transportLocation;
     private String transportOwnerName;
-    private long transportOwnerMobileNumber;
+    private String transportOwnerMobileNumber;
     private long totalVehicles;
     private long totalLoadVehicles;
     private long totalPersonalVehicles;
@@ -20,7 +20,6 @@ public class TransportRequest {
     private String ownerPanCardNumber;
     private String ownerAadhaarCardImage;
     private String ownerPanCardImage;
-    private boolean kyc;
     private boolean status;
     private long otherVehicles;
 
@@ -80,11 +79,11 @@ public class TransportRequest {
         this.transportOwnerName = transportOwnerName;
     }
 
-    public long getTransportOwnerMobileNumber() {
+    public String getTransportOwnerMobileNumber() {
         return transportOwnerMobileNumber;
     }
 
-    public void setTransportOwnerMobileNumber(long transportOwnerMobileNumber) {
+    public void setTransportOwnerMobileNumber(String transportOwnerMobileNumber) {
         this.transportOwnerMobileNumber = transportOwnerMobileNumber;
     }
 
@@ -176,14 +175,6 @@ public class TransportRequest {
         this.ownerPanCardImage = ownerPanCardImage;
     }
 
-    public boolean isKyc() {
-        return kyc;
-    }
-
-    public void setKyc(boolean kyc) {
-        this.kyc = kyc;
-    }
-
     public boolean isStatus() {
         return status;
     }
@@ -213,7 +204,6 @@ public class TransportRequest {
                 ", ownerPanCardNumber='" + ownerPanCardNumber + '\'' +
                 ", ownerAadhaarCardImage='" + ownerAadhaarCardImage + '\'' +
                 ", ownerPanCardImage='" + ownerPanCardImage + '\'' +
-                ", kyc=" + kyc +
                 ", status=" + status +
                 '}';
     }

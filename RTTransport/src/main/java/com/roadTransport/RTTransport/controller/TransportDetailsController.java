@@ -1,6 +1,5 @@
 package com.roadTransport.RTTransport.controller;
 
-import com.roadTransport.RTTransport.entity.DeletedTransportDetails;
 import com.roadTransport.RTTransport.entity.TransportDetails;
 import com.roadTransport.RTTransport.model.otp.OtpRequest;
 import com.roadTransport.RTTransport.model.TransportRequest;
@@ -44,7 +43,7 @@ public class TransportDetailsController {
 
     @Cacheable(value = "TransportDetails", key = "#transportRegistrationNumber")
     @GetMapping("/getDataByMdn/{ownerMobileNumber}")
-    public ResponseEntity<TransportDetails> getListByMdn(@PathVariable("ownerMobileNumber") long ownerMobileNumber) throws Exception {
+    public ResponseEntity<TransportDetails> getListByMdn(@PathVariable("ownerMobileNumber") String ownerMobileNumber) throws Exception {
 
         TransportDetails transportDetails = transportDetailsService.getByMobileNumeber(ownerMobileNumber);
         return ResponseEntity.ok(transportDetails);
@@ -68,18 +67,9 @@ public class TransportDetailsController {
         return ResponseEntity.ok(transportResponse);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<TransportResponse> delete (@RequestBody TransportRequest transportRequest) throws Exception {
-
-        DeletedTransportDetails deletedTransportDetails = transportDetailsService.delete(transportRequest.getTransportRegistrationNumber());
-        TransportResponse transportResponse = new TransportResponse();
-        transportResponse.setMessage("Enter the Otp.");
-        return ResponseEntity.ok(transportResponse);
-    }
-
     @CacheEvict(value = "TransportDetails", allEntries = true)
-    @PostMapping("/verifyDeletionOtp")
-    public ResponseEntity<TransportResponse> verifyDeletion(@RequestBody OtpRequest otpRequest) throws Exception {
+    @DeleteMapping("/delete")
+    public ResponseEntity<TransportResponse> delete(@RequestBody OtpRequest otpRequest) throws Exception {
 
         transportDetailsService.deleteByOtp(otpRequest);
         TransportResponse transportResponse = new TransportResponse();

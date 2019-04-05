@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public interface TransportTemporaryDetailsService {
 
     public TransportTemporaryDetails add (TransportRequest transportRequest) throws Exception;
-    public TransportTemporaryDetails getDataByMdn(long ownerMobileNumber) throws Exception;
+    public TransportTemporaryDetails getDataByMdn(String ownerMobileNumber) throws Exception;
     public TransportTemporaryDetails getDataByTRN(String transportRegistrationNumber) throws Exception;
     public Page<TransportTemporaryDetails> listAllByPage(Pageable pageable);
 

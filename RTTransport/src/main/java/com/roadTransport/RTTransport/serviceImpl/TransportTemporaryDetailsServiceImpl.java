@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 @Service
 public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryDetailsService {
@@ -45,7 +46,7 @@ public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryD
 
         if(transportTemporaryDetails !=null){
 
-            transportTemporaryDetails.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+            transportTemporaryDetails.setCreatedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
             transportTemporaryDetails.setOwnerPanCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerPanCardImage().getBytes()));
             transportTemporaryDetails.setKyc(false);
             transportTemporaryDetails.setOwnerAadhaarCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerAadhaarCardImage().getBytes()));
@@ -66,7 +67,7 @@ public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryD
             transportTemporaryDetails.setTransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
             transportTemporaryDetails.setTransportLogo(Base64.getEncoder().encodeToString(transportRequest.getTransportLogo().getBytes()));
 
-            OtpDetails otpDetails = otpService.getOtp(transportRequest.getTransportOwnerMobileNumber());
+            OtpDetails otpDetails = otpService.getOtp(Long.parseLong(transportRequest.getTransportOwnerMobileNumber()));
             transportTemporaryDetails.setOtp(otpDetails.getOtpNumber());
             transportTemporaryDetailsRepository.saveAndFlush(transportTemporaryDetails);
             return transportTemporaryDetails;
@@ -74,7 +75,7 @@ public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryD
         else{
 
             TransportTemporaryDetails transportTemporaryDetails1 = new TransportTemporaryDetails();
-            transportTemporaryDetails1.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+            transportTemporaryDetails1.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
             transportTemporaryDetails1.setOwnerPanCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerPanCardImage().getBytes()));
             transportTemporaryDetails1.setKyc(false);
             transportTemporaryDetails1.setOwnerAadhaarCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerAadhaarCardImage().getBytes()));
@@ -95,7 +96,7 @@ public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryD
             transportTemporaryDetails1.setTransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
             transportTemporaryDetails1.setTransportLogo(Base64.getEncoder().encodeToString(transportRequest.getTransportLogo().getBytes()));
 
-            OtpDetails otpDetails = otpService.getOtp(transportRequest.getTransportOwnerMobileNumber());
+            OtpDetails otpDetails = otpService.getOtp(Long.parseLong(transportRequest.getTransportOwnerMobileNumber()));
             transportTemporaryDetails1.setOtp(otpDetails.getOtpNumber());
             transportTemporaryDetailsRepository.saveAndFlush(transportTemporaryDetails);
             return transportTemporaryDetails;
@@ -103,7 +104,7 @@ public class TransportTemporaryDetailsServiceImpl implements TransportTemporaryD
     }
 
     @Override
-    public TransportTemporaryDetails getDataByMdn(long ownerMobileNumber) throws Exception {
+    public TransportTemporaryDetails getDataByMdn(String ownerMobileNumber) throws Exception {
 
         TransportTemporaryDetails transportTemporaryDetails = transportTemporaryDetailsRepository.findByMdn(ownerMobileNumber);
         if (transportTemporaryDetails==null){

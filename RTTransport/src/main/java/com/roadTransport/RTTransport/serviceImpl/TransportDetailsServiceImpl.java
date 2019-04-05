@@ -1,13 +1,10 @@
 package com.roadTransport.RTTransport.serviceImpl;
 
-import com.roadTransport.RTTransport.entity.DeletedTransportDetails;
 import com.roadTransport.RTTransport.entity.TransportDetails;
 import com.roadTransport.RTTransport.entity.TransportTemporaryDetails;
-import com.roadTransport.RTTransport.model.otp.OtpDetails;
 import com.roadTransport.RTTransport.model.otp.OtpRequest;
 import com.roadTransport.RTTransport.model.TransportRequest;
 import com.roadTransport.RTTransport.otpService.OtpService;
-import com.roadTransport.RTTransport.repository.deletedRepository.DeletedTransportRepository;
 import com.roadTransport.RTTransport.repository.TransportDetailsRepository;
 import com.roadTransport.RTTransport.repository.TransportPageDetailsRepository;
 import com.roadTransport.RTTransport.repository.TransportTemporaryDetailsRepository;
@@ -16,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class TransportDetailsServiceImpl implements TransportDetailsService {
 
@@ -33,9 +30,6 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
 
     @Autowired
     private TransportDetailsRepository transportDetailsRepository;
-
-    @Autowired
-    private DeletedTransportRepository deletedTransportRepository;
 
 
     @Override
@@ -56,7 +50,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
         else{
 
             TransportDetails transportDetails = new TransportDetails();
-            transportDetails.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+            transportDetails.setCreatedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
             transportDetails.setOwnerPanCardImage(transportTemporaryDetails.getOwnerPanCardImage());
             transportDetails.setKyc(true);
             transportDetails.setOwnerAadhaarCardImage(transportTemporaryDetails.getOwnerAadhaarCardImage());
@@ -64,6 +58,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
             transportDetails.setOwnerImage(transportTemporaryDetails.getOwnerImage());
             transportDetails.setOwnerPanCardNumber(transportTemporaryDetails.getOwnerPanCardNumber());
             transportDetails.setStatus(true);
+            transportDetails.setDeleted(false);
             transportDetails.setTotalBuses(transportTemporaryDetails.getTotalBuses());
             transportDetails.setTotalLoadVehicles(transportTemporaryDetails.getTotalLoadVehicles());
             transportDetails.setOtherVehicles(transportTemporaryDetails.getOtherVehicles());
@@ -78,13 +73,14 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
             transportDetails.setTransportLogo(transportTemporaryDetails.getTransportLogo());
 
             transportDetailsRepository.saveAndFlush(transportDetails);
+            transportTemporaryDetailsRepository.delete(transportTemporaryDetails);
             return transportDetails;
 
         }
     }
 
     @Override
-    public TransportDetails getByMobileNumeber(long ownerMobileNumber) throws Exception {
+    public TransportDetails getByMobileNumeber(String ownerMobileNumber) throws Exception {
 
         TransportDetails transportDetails = transportDetailsRepository.findByMdn(ownerMobileNumber);
         if(transportDetails==null){
@@ -106,38 +102,6 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     }
 
     @Override
-    public DeletedTransportDetails delete(String transportRegistationNumber) throws Exception {
-
-        TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRegistationNumber);
-        DeletedTransportDetails deletedTransportDetails = new DeletedTransportDetails();
-
-        deletedTransportDetails.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
-        deletedTransportDetails.setOtherVehicles(transportDetails.getOtherVehicles());
-        deletedTransportDetails.setOwnerAadhaarCardImage(transportDetails.getOwnerAadhaarCardImage());
-        deletedTransportDetails.setOwnerAadhaarNumber(transportDetails.getOwnerAadhaarNumber());
-        deletedTransportDetails.setOwnerImage(transportDetails.getOwnerImage());
-        deletedTransportDetails.setOwnerPanCardImage(transportDetails.getOwnerPanCardImage());
-        deletedTransportDetails.setOwnerPanCardNumber(transportDetails.getOwnerPanCardNumber());
-        deletedTransportDetails.setStatus(false);
-        deletedTransportDetails.setTotalBuses(transportDetails.getTotalBuses());
-        deletedTransportDetails.setTotalLoadVehicles(transportDetails.getTotalLoadVehicles());
-        deletedTransportDetails.setTotalPersonalVehicles(transportDetails.getTotalPersonalVehicles());
-        deletedTransportDetails.setTotalVehicles(transportDetails.getTotalVehicles());
-        deletedTransportDetails.setTransportLicenceImage(transportDetails.getTransportLicenceImage());
-        deletedTransportDetails.setTransportLocation(transportDetails.getTransportLocation());
-        deletedTransportDetails.setTransportLogo(transportDetails.getTransportLogo());
-        deletedTransportDetails.setTransportName(transportDetails.getTransportName());
-        deletedTransportDetails.setTransportOwnerMobileNumber(transportDetails.getTransportOwnerMobileNumber());
-        deletedTransportDetails.setTransportOwnerName(transportDetails.getTransportOwnerName());
-        deletedTransportDetails.setTransportRegistrationNumber(transportDetails.getTransportRegistrationNumber());
-
-        OtpDetails otpDetails = otpService.getOtp(transportDetails.getTransportOwnerMobileNumber());
-        deletedTransportDetails.setOtp(otpDetails.getOtpNumber());
-        deletedTransportRepository.saveAndFlush(deletedTransportDetails);
-        return deletedTransportDetails;
-    }
-
-    @Override
     public Page<TransportDetails> listAllByPage(Pageable pageable) {
         return transportPageDetailsRepository.findAll(pageable);
     }
@@ -146,11 +110,12 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updateTranportDetails(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setKyc(true);
         transportDetails.setOwnerAadhaarNumber(transportRequest.getOwnerAadhaarNumber());
         transportDetails.setOwnerPanCardNumber(transportRequest.getOwnerPanCardNumber());
         transportDetails.setStatus(true);
+        transportDetails.setDeleted(false);
         transportDetails.setTotalBuses(transportRequest.getTotalBuses());
         transportDetails.setTotalLoadVehicles(transportRequest.getTotalLoadVehicles());
         transportDetails.setOtherVehicles(transportRequest.getOtherVehicles());
@@ -158,7 +123,6 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
         transportDetails.setTotalVehicles(transportRequest.getTotalVehicles());
         transportDetails.setTransportLocation(transportRequest.getTransportLocation());
         transportDetails.setTransportName(transportRequest.getTransportName());
-        transportDetails.setTransportOwnerMobileNumber(transportRequest.getTransportOwnerMobileNumber());
         transportDetails.setTransportOwnerName(transportRequest.getTransportOwnerName());
         transportDetails.setTransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
         transportDetailsRepository.saveAndFlush(transportDetails);
@@ -170,7 +134,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updateOwnerImage(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setOwnerImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerImage().getBytes()));
         transportDetailsRepository.saveAndFlush(transportDetails);
 
@@ -181,7 +145,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updateTransportLogo(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setTransportLogo(Base64.getEncoder().encodeToString(transportRequest.getTransportLogo().getBytes()));
         transportDetailsRepository.saveAndFlush(transportDetails);
 
@@ -192,7 +156,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updateTransportLicence(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setTransportLicenceImage(Base64.getEncoder().encodeToString(transportRequest.getTransportLicenceImage().getBytes()));
         transportDetailsRepository.saveAndFlush(transportDetails);
 
@@ -203,7 +167,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updateAadhaarImage(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setOwnerAadhaarCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerAadhaarCardImage().getBytes()));
         transportDetailsRepository.saveAndFlush(transportDetails);
 
@@ -214,7 +178,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
     public TransportDetails updatePanImage(TransportRequest transportRequest) {
 
         TransportDetails transportDetails = transportDetailsRepository.findBytransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
-        transportDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        transportDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         transportDetails.setOwnerPanCardImage(Base64.getEncoder().encodeToString(transportRequest.getOwnerPanCardImage().getBytes()));
         transportDetailsRepository.saveAndFlush(transportDetails);
 
@@ -242,8 +206,9 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
 
             throw new Exception("Otp is Expired.");
         }
+        transportDetails.setDeleted(true);
 
-        transportDetailsRepository.delete(transportDetails);
+        transportDetailsRepository.saveAndFlush(transportDetails);
 
         return null;
     }

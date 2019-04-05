@@ -30,7 +30,7 @@ public class TransportTemporaryDetailsController {
 
     @Cacheable(value = "TransportTemporaryDetails", key = "#transportRegistrationNumber")
     @GetMapping("/getDataByMdn/{ownerMobileNumber}")
-    public ResponseEntity<TransportTemporaryDetails> getDataByMdn(@PathVariable("ownerMobileNumber") long ownerMobileNumber) throws Exception {
+    public ResponseEntity<TransportTemporaryDetails> getDataByMdn(@PathVariable("ownerMobileNumber") String ownerMobileNumber) throws Exception {
 
         TransportTemporaryDetails transportTemporaryDetails = transportTemporaryDetailsService.getDataByMdn(ownerMobileNumber);
         return ResponseEntity.ok(transportTemporaryDetails);
@@ -38,7 +38,7 @@ public class TransportTemporaryDetailsController {
 
     @Cacheable(value = "TransportTemporaryDetails", key = "#transportRegistrationNumber")
     @GetMapping("/getDataByTRN/{transportRegistrationNumber}")
-    public ResponseEntity<TransportTemporaryDetails> getDataByMdn(@PathVariable("transportRegistrationNumber") String transportRegistrationNumber) throws Exception {
+    public ResponseEntity<TransportTemporaryDetails> getDataByTRN(@PathVariable("transportRegistrationNumber") String transportRegistrationNumber) throws Exception {
 
         TransportTemporaryDetails transportTemporaryDetails = transportTemporaryDetailsService.getDataByTRN(transportRegistrationNumber);
         return ResponseEntity.ok(transportTemporaryDetails);

@@ -2,6 +2,7 @@ package com.roadTransport.RTTransport.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Table
 @Entity
@@ -21,10 +22,10 @@ public class TransportTemporaryDetails {
     private String transportRegistrationNumber;
 
     @Column
-    private String createdDate;
+    private long createdDate;
 
     @Column
-    private String modifiedDate;
+    private long modifiedDate;
 
     @Column
     @NotNull
@@ -34,9 +35,10 @@ public class TransportTemporaryDetails {
     @NotNull
     private String transportOwnerName;
 
-    @Column(unique = true, length = 10)
+    @Column
     @NotNull
-    private long transportOwnerMobileNumber;
+    @Size(min = 10, max = 10)
+    private String transportOwnerMobileNumber;
 
     @Column
     private long totalVehicles;
@@ -51,6 +53,7 @@ public class TransportTemporaryDetails {
     private long totalBuses;
 
     @Column(columnDefinition = "Text")
+    @NotNull
     private String ownerImage;
 
     @Column(columnDefinition = "Text")
@@ -120,19 +123,19 @@ public class TransportTemporaryDetails {
         this.transportRegistrationNumber = transportRegistrationNumber;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getModifiedDate() {
+    public long getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(long modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -152,11 +155,11 @@ public class TransportTemporaryDetails {
         this.transportOwnerName = transportOwnerName;
     }
 
-    public long getTransportOwnerMobileNumber() {
+    public String getTransportOwnerMobileNumber() {
         return transportOwnerMobileNumber;
     }
 
-    public void setTransportOwnerMobileNumber(long transportOwnerMobileNumber) {
+    public void setTransportOwnerMobileNumber(String transportOwnerMobileNumber) {
         this.transportOwnerMobileNumber = transportOwnerMobileNumber;
     }
 

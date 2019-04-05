@@ -2,6 +2,7 @@ package com.roadTransport.RTTransport.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Table
 @Entity
@@ -13,6 +14,9 @@ public class TransportDetails {
     private long id;
 
     @Column
+    private boolean deleted;
+
+    @Column
     @NotNull
     private String transportName;
 
@@ -21,10 +25,10 @@ public class TransportDetails {
     private String transportRegistrationNumber;
 
     @Column
-    private String createdDate;
+    private long createdDate;
 
     @Column
-    private String modifiedDate;
+    private long modifiedDate;
 
     @Column
     @NotNull
@@ -34,9 +38,10 @@ public class TransportDetails {
     @NotNull
     private String transportOwnerName;
 
-    @Column(unique = true, length = 10)
+    @Column()
     @NotNull
-    private long transportOwnerMobileNumber;
+    @Size(min = 10,max = 10)
+    private String transportOwnerMobileNumber;
 
     @Column
     private long totalVehicles;
@@ -51,6 +56,7 @@ public class TransportDetails {
     private long totalBuses;
 
     @Column(columnDefinition = "Text")
+    @NotNull
     private String ownerImage;
 
     @Column(columnDefinition = "Text")
@@ -85,6 +91,15 @@ public class TransportDetails {
     @Column
     private long otherVehicles;
 
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public long getOtherVehicles() {
         return otherVehicles;
     }
@@ -117,19 +132,19 @@ public class TransportDetails {
         this.transportRegistrationNumber = transportRegistrationNumber;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getModifiedDate() {
+    public long getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(long modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -149,11 +164,11 @@ public class TransportDetails {
         this.transportOwnerName = transportOwnerName;
     }
 
-    public long getTransportOwnerMobileNumber() {
+    public String getTransportOwnerMobileNumber() {
         return transportOwnerMobileNumber;
     }
 
-    public void setTransportOwnerMobileNumber(long transportOwnerMobileNumber) {
+    public void setTransportOwnerMobileNumber(String transportOwnerMobileNumber) {
         this.transportOwnerMobileNumber = transportOwnerMobileNumber;
     }
 
@@ -265,6 +280,7 @@ public class TransportDetails {
     public String toString() {
         return "TransportDetails{" +
                 "id=" + id +
+                ", deleted=" + deleted +
                 ", transportName='" + transportName + '\'' +
                 ", transportRegistrationNumber='" + transportRegistrationNumber + '\'' +
                 ", createdDate='" + createdDate + '\'' +

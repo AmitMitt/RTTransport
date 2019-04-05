@@ -1,6 +1,5 @@
 package com.roadTransport.RTTransport.service;
 
-import com.roadTransport.RTTransport.entity.DeletedTransportDetails;
 import com.roadTransport.RTTransport.entity.TransportDetails;
 import com.roadTransport.RTTransport.model.otp.OtpRequest;
 import com.roadTransport.RTTransport.model.TransportRequest;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Service;
 public interface TransportDetailsService {
 
         public TransportDetails add (OtpRequest otpRequest) throws Exception;
-        public TransportDetails getByMobileNumeber(long ownerMobileNumber) throws Exception;
+        public TransportDetails getByMobileNumeber(String ownerMobileNumber) throws Exception;
         public TransportDetails getByTransportNumber(String transportRegistrationNumber) throws Exception;
-        public DeletedTransportDetails delete(String transportRegistationNumber) throws Exception;
         public Page<TransportDetails> listAllByPage(Pageable pageable);
         public TransportDetails updateTranportDetails(TransportRequest transportRequest);
         public TransportDetails updateOwnerImage(TransportRequest transportRequest);
