@@ -12,11 +12,13 @@ import com.roadTransport.RTTransport.service.TransportDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+@Service
 public class TransportDetailsServiceImpl implements TransportDetailsService {
 
     @Autowired
