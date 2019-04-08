@@ -1,6 +1,7 @@
 package com.roadTransport.RTTransport.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -15,6 +16,10 @@ public class TransportDetails {
 
     @Column
     private boolean deleted;
+
+    @Column
+    @Email
+    private String email;
 
     @Column
     @NotNull
@@ -91,6 +96,13 @@ public class TransportDetails {
     @Column
     private long otherVehicles;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public boolean isDeleted() {
         return deleted;
@@ -281,13 +293,14 @@ public class TransportDetails {
         return "TransportDetails{" +
                 "id=" + id +
                 ", deleted=" + deleted +
+                ", email='" + email + '\'' +
                 ", transportName='" + transportName + '\'' +
                 ", transportRegistrationNumber='" + transportRegistrationNumber + '\'' +
-                ", createdDate='" + createdDate + '\'' +
-                ", modifiedDate='" + modifiedDate + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
                 ", transportLocation='" + transportLocation + '\'' +
                 ", transportOwnerName='" + transportOwnerName + '\'' +
-                ", transportOwnerMobileNumber=" + transportOwnerMobileNumber +
+                ", transportOwnerMobileNumber='" + transportOwnerMobileNumber + '\'' +
                 ", totalVehicles=" + totalVehicles +
                 ", totalLoadVehicles=" + totalLoadVehicles +
                 ", totalPersonalVehicles=" + totalPersonalVehicles +

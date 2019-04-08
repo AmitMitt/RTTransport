@@ -1,6 +1,7 @@
 package com.roadTransport.RTTransport.service;
 
 import com.roadTransport.RTTransport.entity.TransportDetails;
+import com.roadTransport.RTTransport.model.SignUpRequest;
 import com.roadTransport.RTTransport.model.otp.OtpRequest;
 import com.roadTransport.RTTransport.model.TransportRequest;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface TransportDetailsService {
 
-        public TransportDetails add (OtpRequest otpRequest) throws Exception;
+        public TransportDetails add (SignUpRequest signUpRequest);
         public TransportDetails getByMobileNumeber(String ownerMobileNumber) throws Exception;
         public TransportDetails getByTransportNumber(String transportRegistrationNumber) throws Exception;
         public Page<TransportDetails> listAllByPage(Pageable pageable);

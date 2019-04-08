@@ -1,6 +1,7 @@
 package com.roadTransport.RTTransport.controller;
 
 import com.roadTransport.RTTransport.entity.TransportDetails;
+import com.roadTransport.RTTransport.model.SignUpRequest;
 import com.roadTransport.RTTransport.model.otp.OtpRequest;
 import com.roadTransport.RTTransport.model.TransportRequest;
 import com.roadTransport.RTTransport.model.TransportResponse;
@@ -24,12 +25,11 @@ public class TransportDetailsController {
     private TransportDetailsService transportDetailsService;
 
     @PostMapping("/addUser")
-    public ResponseEntity<TransportResponse> addUser(@RequestBody OtpRequest otpRequest) throws Exception {
+    public ResponseEntity<TransportResponse> addUser(@RequestBody SignUpRequest signUpRequest) throws Exception {
 
-        transportDetailsService.add(otpRequest);
+        transportDetailsService.add(signUpRequest);
         TransportResponse transportResponse = new TransportResponse();
         transportResponse.setMessage("Driver Add Successfully.");
-        transportResponse.setOtp(otpRequest.getOtp());
         return ResponseEntity.ok(transportResponse);
     }
 
