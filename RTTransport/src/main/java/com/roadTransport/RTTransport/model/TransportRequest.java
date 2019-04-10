@@ -22,6 +22,15 @@ public class TransportRequest {
     private String ownerPanCardImage;
     private boolean status;
     private long otherVehicles;
+    private String gstNumber;
+
+    public String getGstNumber() {
+        return gstNumber;
+    }
+
+    public void setGstNumber(String gstNumber) {
+        this.gstNumber = gstNumber;
+    }
 
     public long getOtherVehicles() {
         return otherVehicles;
@@ -205,6 +214,7 @@ public class TransportRequest {
                 ", ownerAadhaarCardImage='" + ownerAadhaarCardImage + '\'' +
                 ", ownerPanCardImage='" + ownerPanCardImage + '\'' +
                 ", status=" + status +
+                ", gstNumber=" + gstNumber +
                 '}';
     }
 }

@@ -96,6 +96,17 @@ public class TransportDetails {
     @Column
     private long otherVehicles;
 
+    @Column
+    private String gstNumber;
+
+    public String getGstNumber() {
+        return gstNumber;
+    }
+
+    public void setGstNumber(String gstNumber) {
+        this.gstNumber = gstNumber;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -315,6 +326,7 @@ public class TransportDetails {
                 ", kyc=" + kyc +
                 ", status=" + status +
                 ", otherVehicles=" + otherVehicles +
+                ", gstNumber=" + gstNumber +
                 '}';
     }
 }

@@ -111,6 +111,7 @@ public class TransportDetailsServiceImpl implements TransportDetailsService {
         transportDetails.setTransportName(transportRequest.getTransportName());
         transportDetails.setTransportOwnerName(transportRequest.getTransportOwnerName());
         transportDetails.setTransportRegistrationNumber(transportRequest.getTransportRegistrationNumber());
+        transportDetails.setGstNumber(transportRequest.getGstNumber());
         transportDetailsRepository.saveAndFlush(transportDetails);
 
         return transportDetails;
